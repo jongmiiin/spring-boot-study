@@ -67,12 +67,32 @@ public class UserController {
 
     @PutMapping("/user")
     public void updateUser(@RequestBody UserUpdateRequest request){
+        String readSql = "SELECT * FROM user WHERE id = ?";
+        // (rs, rowNum) -> 0
+        // sql문을 사용해서 값이 존재한다면 0을 반환하도록 함 -> 0이 담긴 list로 반환
+        // 값이 존재하지 않다면 빈 list를 반환함
+        // boolean 값을 만들어서 list가 비었다면, True가 되도록 만듬
+        boolean isUserNotExist = jdbcTemplate.query(readSql, (rs, rowNum) -> 0, request.getId()).isEmpty();
+        if(isUserNotExist){
+            throw new IllegalArgumentException();
+        }
+
         String sql = "UPDATE user SET name = ? WHERE id =?";
         jdbcTemplate.update(sql, request.getName(), request.getId());
     }
 
     @DeleteMapping("/user")
     public void deleteUser(@RequestParam String name){ // 삭제는 쿼리로 받기 때문에 Param를 사용
+        String readSql = "SELECT * FROM user WHERE name = ?";
+        // (rs, rowNum) -> 0
+        // sql문을 사용해서 값이 존재한다면 0을 반환하도록 함 -> 0이 담긴 list로 반환
+        // 값이 존재하지 않다면 빈 list를 반환함
+        // boolean 값을 만들어서 list가 비었다면, True가 되도록 만듬
+        boolean isUserNotExist = jdbcTemplate.query(readSql, (rs, rowNum) -> 0, name).isEmpty();
+        if(isUserNotExist){
+            throw new IllegalArgumentException();
+        }
+
         String sql = "DELETE FROM user WHERE name = ?";
         jdbcTemplate.update(sql, name);
     }
