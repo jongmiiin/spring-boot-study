@@ -1,0 +1,11 @@
+spring:
+  datasource: # spring boot가 어떠한 데이터 소스를 가르키게 할 것인가 -> 데이터의 원천 == 데이터베이스
+    # spring이 붙을 데이터의 주소
+    # jdbc : java database connector 를 사용할 것이다
+    # 이때 데이터베이스 종류는 mysql이고 DB는 localhost에 존재한다
+    # 사용할 DB의 이름은 library
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    # 데이터 베이스에 접근할 때 사용할 프로그램을 의미
+    driver-class-name: com.mysql.cj.jdbc.Driver
