@@ -4,6 +4,7 @@ import com.group.libraryapp.dto.user.request.UserCreateRequest;
 import com.group.libraryapp.dto.user.request.UserUpdateRequest;
 import com.group.libraryapp.dto.user.response.UserResponse;
 import com.group.libraryapp.service.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,10 +14,11 @@ public class UserController {
     // final을 사용하면 재할당이 되지 않게 함
     // DB 연동하면서 이제 사용 X
     // private final List<User> users = new ArrayList<>();
-
+//    @Autowired
+//    private final UserService userService;
     private final UserService userService;
 
-    // jdbcTemplate 받아서 설정해주는 생성자
+// jdbcTemplate 받아서 설정해주는 생성자
     public UserController(UserService userService) {
         this.userService = userService;
     }
