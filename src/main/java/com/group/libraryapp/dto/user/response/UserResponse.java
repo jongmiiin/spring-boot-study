@@ -25,6 +25,13 @@ public class UserResponse {
         this.age = user.getAge();
     }
 
+    // UserServiceV2.java에서 사용하기 위한 생성자 생성
+    public UserResponse(User user){
+        this.id = user.getId();
+        this.name = user.getName();
+        this.age = user.getAge();
+    }
+
     public long getId() {
         return id;
     }

@@ -9,11 +9,11 @@ import java.util.List;
 // SQL을 사용해 실제 DB와의 통신을 담당한다
 // 즉, DB와의 접근을 담당
 @Repository
-public class UserRepository {
+public class UserJdbcRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public UserRepository(JdbcTemplate jdbcTemplate) {
+    public UserJdbcRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

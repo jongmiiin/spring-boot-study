@@ -3,8 +3,7 @@ package com.group.libraryapp.controller.user;
 import com.group.libraryapp.dto.user.request.UserCreateRequest;
 import com.group.libraryapp.dto.user.request.UserUpdateRequest;
 import com.group.libraryapp.dto.user.response.UserResponse;
-import com.group.libraryapp.service.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.group.libraryapp.service.user.UserServiceV2;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,10 +15,10 @@ public class UserController {
     // private final List<User> users = new ArrayList<>();
 //    @Autowired
 //    private final UserService userService;
-    private final UserService userService;
+    private final UserServiceV2 userService;
 
 // jdbcTemplate 받아서 설정해주는 생성자
-    public UserController(UserService userService) {
+    public UserController(UserServiceV2 userService) {
         this.userService = userService;
     }
 
