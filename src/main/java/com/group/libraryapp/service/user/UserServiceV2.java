@@ -6,6 +6,7 @@ import com.group.libraryapp.dto.user.request.UserCreateRequest;
 import com.group.libraryapp.dto.user.request.UserUpdateRequest;
 import com.group.libraryapp.dto.user.response.UserResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,11 +20,17 @@ public class UserServiceV2 {
         this.userRepository = userRepository;
     }
 
+    // 트랜잭션 어노테이션을 붙여서 함수가 끝나야 커밋이 되게 만든다
+    // 함수 시작시 start transaction, 예외 없이 끝나면 commit, 문제가 생기면 rollback
+    @Transactional
     // save 메소드에 객체를 넣어주면 INSERT sql이 자동으로 날아간다
     public void saveUser(UserCreateRequest request){
         User u = userRepository.save(new User(request.getName(), request.getAge()));
     }
 
+    // SELECT 쿼리만 사용시 readOnly옵션 사용 가능
+    // 사용시 다른 기능을 빼기 때문에 약간의 성능적 효과가 생긴다
+    @Transactional(readOnly = true)
     public List<UserResponse> getUsers(){
         // findall : 자동으로 sql을 날려서 자동으로 해당 테이블에 있는 모든 데이터를 가져옴
         // userRepository의 findall을 부르면 sql을 자동으로 불러서 모든 유저 정보를 가져오고
@@ -37,6 +44,7 @@ public class UserServiceV2 {
         // 즉, 유저 객체를 가져와서 객체 간의 변환을 하게 된것이다
     }
 
+    @Transactional
     public void updateUser(UserUpdateRequest request){
         // userRepository의 findById를 사용해 id 기준 1개의 데이터를 가져온다
         // 결과로 Optional<User>가 나온다
@@ -46,9 +54,14 @@ public class UserServiceV2 {
 
         user.updateName(request.getName());
         // 이때 자동으로 유저의 이름이 바뀐 것을 확인하고 바뀐 것을 기준으로 업데이트 쿼리가 날아간다
-        userRepository.save(user);
+
+        // 영속성 컨텍스트의 특징 1 : 변경감지
+        // 영속성 컨텍스트 내에서는 명시적으로 save를 해주지 않아도 알아서 변경을 감지해서 저장한다
+        // 따라서 save함수를 쓰지 않아도 자동으로 저장된다
+//        userRepository.save(user);
     }
 
+    @Transactional
     public void deleteUser(String name){
 //        User user = userRepository.findByName(name);
 //        if(user == null){
